@@ -9,7 +9,7 @@ const Database = require('..').Database
   const db = new Database(__dirname + '/database.db' /* , optional: schema path */)
 
   await db.run(`CREATE TABLE IF NOT EXISTS items (
-      id    interger primary key,
+      id    integer  primary key,
       value text     not null
   )`)
 

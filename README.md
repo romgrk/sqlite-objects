@@ -23,7 +23,7 @@ const Database = require('sqlite-objects').Database
   // await db.ready /* if schemaPath is provided */
 
   await db.run(`CREATE TABLE IF NOT EXISTS items (
-      id    interger primary key,
+      id    integer  primary key,
       value text     not null
   )`)
 
