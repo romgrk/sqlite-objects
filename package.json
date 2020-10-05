@@ -1,0 +1,16 @@
+{
+  "name": "sqlite-objects",
+  "version": "1.0.0",
+  "description": "Usable sqlite-based persistent objects: database, key-value store (promised based)",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["sqlite", "sqlite3", "database", "key-value", "store"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "object-path-immutable": "^4.1.0",
+    "sqlite3": "^5.0.0"
+  }
+}
