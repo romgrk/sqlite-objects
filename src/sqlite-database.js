@@ -9,6 +9,10 @@ const sqlite3 = require('sqlite3')
 
 
 class SqliteDatabase {
+  /**
+   * @param {string} path - path of the database
+   * @param {string} [structurePath] - path of the database schema
+   */
   constructor(path, structurePath = null) {
     this.path = path
     this.structurePath = structurePath
@@ -46,7 +50,7 @@ class SqliteDatabase {
       })
     })
 
-    Promise.all(actions)
+    return Promise.all(actions)
       .then(() => console.log(chalk.green.bold('Created SQL tables')))
       .catch(err => {
         console.error(chalk.red.bold(err.code + ': ' + err.message))
@@ -55,10 +59,17 @@ class SqliteDatabase {
       })
   }
 
+  /**
+   * Runs a SQL query
+   * @param {string} query - The SQL query to run
+   * @param {Object} params - The parameters of the SQL query
+   * @returns {Promise.<number>} Returns the number of rows changed
+   */
   run(query, params = {}) {
     return new Promise((resolve, reject) => {
       const interpolated = interpolate(query, params)
-      this.instance.run(interpolated.query, interpolated.params, function(err) {
+      this.instance.run(interpolated.query, interpolated.params,
+        /* required keyword, some info is this-bound -_- */ function(err) {
         if (err)
           reject(err)
         else
@@ -67,10 +78,17 @@ class SqliteDatabase {
     })
   }
 
+  /**
+   * Insert a new row by running a SQL query
+   * @param {string} query - The SQL query to run
+   * @param {Object} params - The parameters of the SQL query
+   * @returns {Promise.<any>} Returns the ID of the inserted row
+   */
   insert(query, params = {}) {
     return new Promise((resolve, reject) => {
       const interpolated = interpolate(query, params)
-      this.instance.run(interpolated.query, interpolated.params, function(err) {
+      this.instance.run(interpolated.query, interpolated.params,
+        /* required keyword, some info is this-bound -_- */ function(err) {
         if (err)
           reject(err)
         else
@@ -79,6 +97,12 @@ class SqliteDatabase {
     })
   }
 
+  /**
+   * Insert many rows by running a SQL query
+   * @param {string} query - The SQL query to run
+   * @param {Object} params - The parameters of the SQL query
+   * @returns {Promise}
+   */
   insertMany(query, rows) {
     return new Promise((resolve, reject) => {
       const db = this.instance
@@ -102,6 +126,12 @@ class SqliteDatabase {
     })
   }
 
+  /**
+   * Select one row
+   * @param {string} query - The SQL query to run
+   * @param {Object} params - The parameters of the SQL query
+   * @returns {Promise.<Object>} The returned row
+   */
   findOne(query, params = {}) {
     return new Promise((resolve, reject) => {
       const interpolated = interpolate(query, params)
@@ -114,6 +144,12 @@ class SqliteDatabase {
     })
   }
 
+  /**
+   * Select many row
+   * @param {string} query - The SQL query to run
+   * @param {Object} params - The parameters of the SQL query
+   * @returns {Promise.<Array.<Object>>} The returned rows
+   */
   findAll(query, params = {}) {
     return new Promise((resolve, reject) => {
       const interpolated = interpolate(query, params)
