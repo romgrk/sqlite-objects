@@ -8,6 +8,9 @@ What does it mean:
  - Sane placeholders: `db.findOne('SELECT * FROM items WHERE id = @id', { id: 1 })`
  - Setup with `new Database(dbPath)` and that's it
 
+#### Objects
+ - [Database](#database)
+ - [Key-value Store](#key-value-store)
 
 ## Database
 
@@ -18,7 +21,10 @@ const Database = require('sqlite-objects').Database
 
 ;(async () => {
 
-  const db = new Database(__dirname + '/database.db' /* , optional: schemaPath */)
+  const db = new Database(
+    __dirname + '/database.db'
+    // , schemaPath /* optional */
+  )
 
   // await db.ready /* if schemaPath is provided */
 
@@ -63,22 +69,27 @@ const KeyValueStore = require('sqlite-objects').KeyValueStore
 
   await store.set(42, { value: 'some value' })
   await store.set(43, { value: 'other value' })
+  await store.set(44, { value: 'final value' })
 
   const item = await store.get(42)
 
   const updateItem = await store.update(42, { content: 'other content' })
 
-  const items = await store.list()
+  const items = await store.values()
 
-  await store.remove(43)
+  await store.delete(43)
 
-  const updatedItems = await store.list()
+  const updatedItemsKeys = await store.keys()
+
+  for (let [key, value] of await store.entries()) {
+    console.log(key, value)
+  }
 
   console.log({
     item,
     updateItem,
     items,
-    updatedItems,
+    updatedItemsKeys,
   })
 })()
 ```
