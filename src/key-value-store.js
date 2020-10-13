@@ -34,7 +34,7 @@ class KeyValueStore {
       'SELECT * FROM items WHERE id = @id',
       { id }
     )
-    .then(r => JSON.parse(r.value))
+    .then(r => r ? JSON.parse(r.value) : undefined)
   }
 
   /**
