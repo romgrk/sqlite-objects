@@ -25,7 +25,7 @@ class SqliteDatabase {
     this.instance = new sqlite3.Database(this.path)
 
     if (this.structurePath && !exists) {
-      this.ready = this.setup(structurePath)
+      this.ready = this.setup(this.structurePath)
     }
     else {
       this.ready = Promise.resolve()
